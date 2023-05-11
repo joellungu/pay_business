@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pay_business/utils/produit_controller.dart';
 
@@ -11,10 +12,15 @@ class NouveauProduit extends StatelessWidget {
   //
   RxInt vue = 0.obs;
   //
+  final box = GetStorage();
+  //
   List unites = ["Gramme", "Kilogramme", "Millilittre", "Litre"];
   RxInt unite = 0.obs;
   //
   RxString photo = "".obs;
+  //
+  RxString debut = RxString("");
+  RxString fin = RxString("");
   //
   ProduitController produitController = Get.find();
   //
@@ -27,7 +33,24 @@ class NouveauProduit extends StatelessWidget {
   //
   RxString path = "".obs;
   //
-  RxString v = "Produit".obs;
+  RxInt type = 0.obs;
+  RxList<String> types = ["Produit"].obs;
+
+  //
+  List categories = [];
+  //
+  NouveauProduit() {
+    //
+    Map e = box.read("boutique") ?? {};
+    print(e);
+    if (e['typeEtablissement'] == "Restaurant" ||
+        e['typeEtablissement'] == "Bar" ||
+        e['typeEtablissement'] == "Pharmacie") {
+      types.value = ["Produit"];
+    } else {
+      types.value = ["Evenement"];
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,39 +86,25 @@ class NouveauProduit extends StatelessWidget {
                             ),
                           ),
                           Obx(
-                            () => Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Radio(
-                                      value: "Produit",
-                                      groupValue: v.value,
-                                      onChanged: (e) {
-                                        v.value = e as String;
-                                      },
-                                    ),
-                                    Text("Produit")
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Radio(
-                                      value: "Service",
-                                      groupValue: v.value,
-                                      onChanged: (e) {
-                                        v.value = e as String;
-                                        //path.value = "";
-                                      },
-                                    ),
-                                    Text("Evenement")
-                                  ],
-                                ),
-                              ],
+                            () => DropdownButtonHideUnderline(
+                              child: DropdownButton<int>(
+                                onChanged: (c) {
+                                  //
+                                  //types[type.value] = "";
+                                },
+                                focusColor: Colors.white,
+                                isExpanded: true,
+                                value: type.value,
+                                items: List.generate(types.length, (index) {
+                                  String e = types[index];
+                                  return DropdownMenuItem(
+                                    child: Text(e),
+                                    value: index,
+                                  );
+                                }),
+                              ),
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),
@@ -155,10 +164,6 @@ class NouveauProduit extends StatelessWidget {
                                       child: Text("CDF"),
                                       value: "CDF",
                                     ),
-                                    DropdownMenuItem(
-                                      child: Text("USD"),
-                                      value: "USD",
-                                    ),
                                   ],
                                 ),
                               ),
@@ -183,7 +188,8 @@ class NouveauProduit extends StatelessWidget {
                       height: 10,
                     ),
                     Obx(
-                      () => v.value == "Produit"
+                      // ignore: unrelated_type_equality_checks
+                      () => types[type.value] == "Produit"
                           ? Column(
                               children: [
                                 Container(
@@ -267,7 +273,72 @@ class NouveauProduit extends StatelessWidget {
                                 ),
                               ],
                             )
-                          : Container(),
+                          : Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    flex: 4,
+                                    child: Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(debut.value),
+                                          IconButton(
+                                            onPressed: () {
+                                              //
+                                              showDatePicker(
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime(2023),
+                                                lastDate: DateTime(2030),
+                                              ).then((d) {
+                                                //
+                                                debut.value =
+                                                    "${d!.day}-${d.month}-${d.year}";
+                                              });
+                                            },
+                                            icon: Icon(Icons.calendar_month),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(fin.value),
+                                          IconButton(
+                                            onPressed: () {
+                                              //
+                                              showDatePicker(
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime(2023),
+                                                lastDate: DateTime(2030),
+                                              ).then((d) {
+                                                //
+                                                fin.value =
+                                                    "${d!.day}-${d.month}-${d.year}";
+                                              });
+                                            },
+                                            icon: Icon(Icons.calendar_month),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -330,11 +401,13 @@ class NouveauProduit extends StatelessWidget {
                       ),
                     ),
                   );
+                  //
+                  Map boutique = box.read('boutique');
                   /**
                    */
                   Map e = {
-                    "idBoutique": 1,
-                    "type": v.value,
+                    "idBoutique": boutique['id'],
+                    "type": types[type.value],
                     "nom": nom.text,
                     "prix": prix.text,
                     "devise": device.value,
@@ -342,6 +415,7 @@ class NouveauProduit extends StatelessWidget {
                     "poids": poids.text,
                     "unite": unites[unite.value],
                     "details": details.text,
+                    "date": "${debut.value} ${fin.value}",
                     "photo": photo.value.isEmpty
                         ? null
                         : File(photo.value).readAsBytesSync(),

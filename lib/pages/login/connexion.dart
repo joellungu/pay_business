@@ -151,7 +151,8 @@ class Connexion extends StatelessWidget {
                                 ),
                               ),
                             );
-                            loginController.connexion(telephone.text, mdp.text);
+                            loginController.connexion(
+                                "+243${telephone.text}", mdp.text);
                             //Get.off(Accueil()); //
                             //Get.to(Inscription()); //
                           }
@@ -187,15 +188,15 @@ class Connexion extends StatelessWidget {
                       const SizedBox(
                         height: 40,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          //
-                        },
-                        child: Text("Mot de passe oublié"),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     //
+                      //   },
+                      //   child: Text("Mot de passe oublié"),
+                      // ),
+                      // const SizedBox(
+                      //   height: 20,
+                      // ),
                       Text("""Si vous n'avez pas encore de compte"""),
                       const SizedBox(
                         height: 20,

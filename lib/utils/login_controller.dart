@@ -12,10 +12,9 @@ class LoginController extends GetxController {
   //
   Future<void> connexion(String telephon, String motdepasse) async {
     //
-    Response rep =
-        await requete.getE("utilisateur/login/$telephon/$motdepasse");
+    Response rep = await requete.getE("boutique/login/$telephon/$motdepasse");
     if (rep.isOk) {
-      box.write("user", rep.body);
+      box.write("boutique", rep.body);
       Get.back();
       Get.snackbar(
         "Succès",
@@ -25,6 +24,8 @@ class LoginController extends GetxController {
       );
       Get.off(Accueil());
     } else {
+      print(rep.body);
+      print(rep.statusCode);
       Get.back();
       Get.snackbar("Erreur", "Un problème lors de la connexion");
     }
@@ -33,10 +34,9 @@ class LoginController extends GetxController {
   //
   Future<void> connexionEntreprise(String telephon, String motdepasse) async {
     //
-    Response rep =
-        await requete.getE("utilisateur/login/$telephon/$motdepasse");
+    Response rep = await requete.getE("boutique/login/$telephon/$motdepasse");
     if (rep.isOk) {
-      box.write("user", rep.body);
+      box.write("boutique", rep.body);
       Get.back();
       Get.snackbar("Succès", "L'enregistrement à reussit");
       Get.off(Accueil());
@@ -64,9 +64,9 @@ class LoginController extends GetxController {
   //
   Future<void> mettreajour(Map e) async {
     //
-    Response rep = await requete.putE("utilisateur", e);
+    Response rep = await requete.putE("boutique", e);
     if (rep.isOk) {
-      box.write("user", rep.body);
+      box.write("boutique", rep.body);
       Get.back();
       Get.snackbar("Succès", "Mise à jour éffectué");
       Get.off(Accueil());
@@ -79,10 +79,10 @@ class LoginController extends GetxController {
   //
   Future<void> inscription(Map e) async {
     //
-    Response rep = await requete.postE("utilisateur", e);
+    Response rep = await requete.postE("boutique", e);
     if (rep.isOk) {
       //
-      box.write("user", rep.body);
+      box.write("boutique", rep.body);
       Get.back();
       Get.snackbar("Succès", "L'enregistrement à reussit");
       Get.off(Accueil());

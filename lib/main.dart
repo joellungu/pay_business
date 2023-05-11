@@ -10,6 +10,8 @@ import 'utils/compte_controller.dart';
 import 'utils/login_controller.dart';
 import 'utils/panier_controller.dart';
 import 'utils/produit_controller.dart';
+import 'utils/requete.dart';
+import 'widgets/paiement_controller.dart';
 
 void main() async {
   //
@@ -25,24 +27,32 @@ void main() async {
   //
   PanierController panierController = Get.put(PanierController());
   //
-  runApp(const MyApp());
+  PaiementController paiementController = Get.put(PaiementController());
+  //
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+  MyApp({super.key});
+  //
+  final box = GetStorage();
+  //Requete requete = Requete();
+  //
   @override
   Widget build(BuildContext context) {
+    Map e = box.read("boutique") ?? {};
+    print(e);
+    //
     return GetMaterialApp(
-        title: 'Pay Business',
-        theme: ThemeData(
-          primarySwatch: Colors.indigo,
-        ),
-        home: Connexion()
-        //Accueil(),
-        //Entreprise(),
-        //Profile(),
-        );
+      title: 'Pay Business',
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+      ),
+      home: e['id'] != null ? Accueil() : Connexion(),
+      //Connexion()
+      //Accueil(),
+      //Entreprise(),
+      //Profile(),
+    );
   }
 }

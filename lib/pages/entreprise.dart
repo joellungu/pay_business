@@ -21,6 +21,7 @@ class Entreprise extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.indigo.shade900,
+              title: const Text("Pay"),
               actions: [
                 IconButton(
                     onPressed: () {
@@ -34,8 +35,8 @@ class Entreprise extends StatelessWidget {
                 indicatorColor: Colors.white,
                 tabs: [
                   Tab(text: "Produits & Services"),
-                  Tab(text: "Commandes  2"),
-                  Tab(text: "Reservations 10"),
+                  Tab(text: "Commandes"),
+                  Tab(text: "Reservations"),
                 ],
               ),
             ),

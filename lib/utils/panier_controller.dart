@@ -10,6 +10,8 @@ class PanierController extends GetxController with StateMixin<List> {
   //
   Requete requete = Requete();
   //
+  RxList listProduits = [].obs;
+  //
   Future<void> connexion(String telephon, String motdepasse) async {
     //
     Response rep =
@@ -91,6 +93,29 @@ class PanierController extends GetxController with StateMixin<List> {
       print(rep.body);
       Get.back();
       Get.snackbar("Erreur", "Un problème est survenu lors de l'inscription");
+    }
+  }
+
+  //
+  Future<void> commander(Map e) async {
+    //
+    Response rep = await requete.postE("commande", e);
+    if (rep.isOk) {
+      //
+      box.write("commandes", rep.body);
+      //
+      listProduits.value = [];
+      //
+      Get.back();
+      Get.snackbar("Succès", "Commande éffectué !");
+
+      //Get.off(Accueil());
+    } else {
+      //
+      print(rep.body);
+      Get.back();
+      Get.snackbar("Erreur",
+          "Un problème est survenu lors de l'enregistrement de la commande");
     }
   }
   //

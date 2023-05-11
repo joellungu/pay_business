@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pay_business/pages/accueil.dart';
@@ -24,9 +26,11 @@ class ProduitController extends GetxController with StateMixin<List> {
   }
 
   tousProduitsEntreprise(String id) async {
-    String idbusiness = "1";
-    change([], status: RxStatus.loading());
-    Response rep = await requete.getE("produit/all/$idbusiness");
+    //String idbusiness = "1";
+    //Timer(const Duration(seconds: 1), () {
+    //change([], status: RxStatus.loading());
+    //});
+    Response rep = await requete.getE("produit/all/$id");
     if (rep.isOk) {
       change(rep.body, status: RxStatus.success());
     } else {

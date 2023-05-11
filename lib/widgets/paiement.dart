@@ -70,7 +70,7 @@ class _PayementMethode extends State<PayementMethode> {
             height: 5,
           ),
           Text(
-            "Formulaire payant (${widget.prix} dollar) plus frais de transaction",
+            "Total à payer (${widget.prix} dollar) plus frais de transaction",
             textAlign: TextAlign.center,
           ),
           Row(
@@ -139,20 +139,18 @@ class _PayementMethode extends State<PayementMethode> {
                 var ref = getReference();
                 DateTime d = DateTime.now();
                 Map e = {
-                  "nom": widget.requette['nom'] ?? "",
-                  "postnom": widget.requette['postnom'] ?? "",
-                  "prenom": widget.requette['prenom'] ?? "",
-                  "genre": widget.requette['genre'] ?? "",
-                  "email": widget.requette['email'] ?? "",
-                  "adresse": widget.requette['adresse'] ?? "",
+                  "merchant": "PITUP",
+                  "idUtilisateur": widget.requette['idUtilisateur'] ?? "",
                   "date": "${d.day}/${d.month}/${d.year}",
                   "type": widget.type,
                   "demande": widget.demande,
-                  "phone": "243" + numero.text,
-                  "telephone": "243" + (widget.requette['telephone'] ?? ""),
-                  "reference": ref,
-                  "amount": widget.prix,
+                  "phone": "243${numero.text}",
+                  "reference": widget.requette['reference'],
+                  "amount": widget.requette['prix'],
                   "currency": gender,
+                  "service": "commande",
+                  "valider": false,
+                  "callbackurl": "",
                 };
                 print('element: $e');
                 Map m = await paiementController.paiement(e);

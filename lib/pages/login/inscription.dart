@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pay_business/utils/login_controller.dart';
 import 'package:uuid/uuid.dart';
 
 class Inscription extends StatefulWidget {
@@ -32,9 +33,15 @@ class _Inscription extends State<Inscription> {
   TextEditingController cellule = TextEditingController();
   TextEditingController etablissement = TextEditingController();
   TextEditingController lieu = TextEditingController();
+  TextEditingController rccm = TextEditingController();
+  TextEditingController nombreEtablissement = TextEditingController();
   TextEditingController annee = TextEditingController();
   TextEditingController titre = TextEditingController();
   TextEditingController codepromo = TextEditingController();
+  TextEditingController idnat = TextEditingController();
+  TextEditingController numeroImpot = TextEditingController();
+  //
+  LoginController loginController = Get.find();
   //
 
   List genres = ["Homme", "Femme"];
@@ -105,7 +112,10 @@ class _Inscription extends State<Inscription> {
   ];
   //
   RxList categorie = [""].obs;
-  List hotel = ["1 Etoile", "2 Etoile", "3 Etoile", "4 Etoile", "5 Etoile"].obs;
+  List hotel = [
+    "Groupe 1",
+    "Groupe 2",
+  ].obs;
   List restaurant = [
     "1 Fourchette",
     "2 Fourchette",
@@ -357,7 +367,7 @@ class _Inscription extends State<Inscription> {
                   Expanded(
                     flex: 1,
                     child: DropdownButtonHideUnderline(
-                      child: DropdownButtonFormField<int>(
+                      child: DropdownButton<int>(
                         value: genre,
                         /*
                             style: TextStyle(
@@ -467,6 +477,7 @@ class _Inscription extends State<Inscription> {
             controller: telephone,
             decoration: InputDecoration(
               //prefixIcon: Text("Email:"),
+              prefixText: "+243",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
@@ -535,7 +546,7 @@ class _Inscription extends State<Inscription> {
                       alignment: Alignment.center,
                       //width: Get.size.width,
                       child: TextField(
-                        controller: cellule,
+                        controller: etablissement,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -580,12 +591,12 @@ class _Inscription extends State<Inscription> {
                       alignment: Alignment.center,
                       //width: Get.size.width,
                       child: TextField(
-                        controller: cellule,
+                        controller: lieu,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            contentPadding: EdgeInsets.all(0)),
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 13,
@@ -615,7 +626,7 @@ class _Inscription extends State<Inscription> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     "  RCCM: ",
                     style: TextStyle(fontSize: 12),
                   ),
@@ -625,7 +636,7 @@ class _Inscription extends State<Inscription> {
                       alignment: Alignment.center,
                       //width: Get.size.width,
                       child: TextField(
-                        controller: cellule,
+                        controller: rccm,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -667,8 +678,8 @@ class _Inscription extends State<Inscription> {
                   Expanded(
                     flex: 1,
                     child: DropdownButtonHideUnderline(
-                      child: DropdownButtonFormField<int>(
-                        value: 1,
+                      child: DropdownButton<int>(
+                        value: p_e,
                         onChanged: (value) {
                           p_e = value as int;
                           //value = s;
@@ -728,20 +739,20 @@ class _Inscription extends State<Inscription> {
                           //   categorie.value = autre;
                           // }
                         },
-                        /*
+                        /* //
                         */
                         items: const [
                           DropdownMenuItem(
+                            value: 0,
+                            child: Text("Bar"),
+                          ),
+                          DropdownMenuItem(
                             value: 1,
-                            child: Text("Hotel"),
+                            child: Text("Evenementiel"),
                           ),
                           DropdownMenuItem(
                             value: 2,
                             child: Text("Restaurant"),
-                          ),
-                          DropdownMenuItem(
-                            value: 3,
-                            child: Text("Pharmacie"),
                           ),
                         ],
                       ),
@@ -873,7 +884,7 @@ class _Inscription extends State<Inscription> {
                       alignment: Alignment.center,
                       //width: Get.size.width,
                       child: TextField(
-                        controller: cellule,
+                        controller: nombreEtablissement,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -953,6 +964,40 @@ class _Inscription extends State<Inscription> {
           const SizedBox(
             height: 20,
           ),
+          TextField(
+            controller: idnat,
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.join_full),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              hintText: 'ID NAT'.tr,
+              labelText: 'ID NAT'.tr,
+            ),
+            onChanged: (value) {
+              //print("Password value $value");
+            },
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          TextField(
+            controller: numeroImpot,
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.join_full),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              hintText: "Numero d'impot".tr,
+              labelText: "Numero d'impot".tr,
+            ),
+            onChanged: (value) {
+              //print("Password value $value");
+            },
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           ElevatedButton(
             onPressed: () async {
               if (nom.text.isEmpty) {
@@ -986,17 +1031,45 @@ class _Inscription extends State<Inscription> {
                   //
                   //ControllerApp controllerApp = Get.find();
                   //
-
-                  //
                   //String vd = d!.day < 9 ? "0${d!.day}" : "${d!.day}";
+                  String categorie = n_e == 1
+                      ? hotel[cat]
+                      : n_e == 2
+                          ? restaurant[cat]
+                          : autre[cat];
                   //String ddd = "${d!.year}-${d!.month}-$vd";
                   Map<String, dynamic> e = {
                     //"id": getCode(),
                     "nom": nom.text,
                     "postnom": postnom.text,
                     "prenom": prenom.text,
-                    "genre": genres[genre],
+                    "sexe": genres[genre],
+                    "etatCivil": etatCivils[etatCivil],
+                    "email": email.text,
+                    "telephone": "+243${telephone.text}",
+                    "adresse": adresse.text,
+                    "denomination": etablissement.text,
+                    "adresseEtablissement": lieu.text,
+                    "rccm": rccm.text,
+                    "idnat": idnat.text,
+                    "numeroImpot": numeroImpot.text,
+                    "provinceSiege": listeProvince[p_e],
+                    "typeEtablissement": [
+                      "Bar",
+                      "Evenementiel",
+                      "Restaurant"
+                    ][n_e],
+                    "categorie": categorie,
+                    "nombreEtablissement": nombreEtablissement.text,
+                    "photo": photo != null
+                        ? File(photo!.path).readAsBytesSync()
+                        : null,
+                    "codePromo": codepromo.text,
+                    "motDePasse": "pay0000",
+                    "status": 0,
                   };
+                  //
+                  loginController.inscription(e);
                   //
                   //
                   // showDialog(

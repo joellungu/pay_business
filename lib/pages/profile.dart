@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'faq/faq.dart';
+import 'tables.dart';
+
 class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,101 +24,101 @@ class Profile extends StatelessWidget {
           body: ListView(
             padding: const EdgeInsets.all(10),
             children: [
-              Card(
-                elevation: 1,
-                color: Colors.indigo.shade200,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: SizedBox(
-                  height: Get.size.height / 4.5,
-                  width: double.maxFinite,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 5,
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: BarcodeWidget(
-                            barcode: Barcode.qrCode(
-                              errorCorrectLevel: BarcodeQRCorrectionLevel.high,
-                            ),
-                            data: '1234567\n7',
-                            width: 200,
-                            height: 200,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 5,
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text.rich(
-                                  TextSpan(text: "", children: [
-                                    TextSpan(
-                                      text: "Vodacom\n",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.indigo.shade900,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const TextSpan(
-                                      text: "+243 815 381 693",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ]),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
+              // Card(
+              //   elevation: 1,
+              //   color: Colors.indigo.shade200,
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   child: SizedBox(
+              //     height: Get.size.height / 4.5,
+              //     width: double.maxFinite,
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         Expanded(
+              //           flex: 5,
+              //           child: Padding(
+              //             padding: EdgeInsets.all(10),
+              //             child: BarcodeWidget(
+              //               barcode: Barcode.qrCode(
+              //                 errorCorrectLevel: BarcodeQRCorrectionLevel.high,
+              //               ),
+              //               data: '1234567\n7',
+              //               width: 200,
+              //               height: 200,
+              //             ),
+              //           ),
+              //         ),
+              //         Expanded(
+              //           flex: 5,
+              //           child: Container(
+              //             padding: const EdgeInsets.all(10),
+              //             child: Column(
+              //               mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //               children: [
+              //                 Align(
+              //                   alignment: Alignment.center,
+              //                   child: Text.rich(
+              //                     TextSpan(text: "", children: [
+              //                       TextSpan(
+              //                         text: "Vodacom\n",
+              //                         style: TextStyle(
+              //                           fontSize: 20,
+              //                           color: Colors.indigo.shade900,
+              //                           fontWeight: FontWeight.bold,
+              //                         ),
+              //                       ),
+              //                       const TextSpan(
+              //                         text: "+243 815 381 693",
+              //                         style: TextStyle(
+              //                           fontSize: 20,
+              //                           fontWeight: FontWeight.bold,
+              //                         ),
+              //                       ),
+              //                     ]),
+              //                   ),
+              //                 )
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              const SizedBox(
                 height: 10,
               ),
+              // ListTile(
+              //   onTap: () {
+              //     //
+              //     Get.to(Tables());
+              //     //DemandeTransfere
+              //   },
+              //   leading: Container(
+              //     height: 50,
+              //     width: 50,
+              //     alignment: Alignment.center,
+              //     decoration: BoxDecoration(
+              //       color: Colors.indigo.shade900.withOpacity(0.2),
+              //       borderRadius: BorderRadius.circular(25),
+              //     ),
+              //     child: Icon(
+              //       CupertinoIcons.table,
+              //       size: 30,
+              //       color: Colors.grey.shade700,
+              //     ),
+              //   ),
+              //   title: Text("Tables"),
+              //   trailing: Icon(
+              //     Icons.arrow_forward_ios,
+              //   ),
+              // ),
               ListTile(
                 onTap: () {
                   //
-                  //Get.to(UpdateProfile());
-                  //DemandeTransfere
-                },
-                leading: Container(
-                  height: 50,
-                  width: 50,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.indigo.shade900.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Icon(
-                    CupertinoIcons.person,
-                    size: 30,
-                    color: Colors.grey.shade700,
-                  ),
-                ),
-                title: Text("Profile"),
-                trailing: Icon(
-                  Icons.arrow_forward_ios,
-                ),
-              ),
-              ListTile(
-                onTap: () {
-                  //
-                  //Get.to(Faq());
+                  Get.to(Faq());
                   //
                 },
                 leading: Container(
